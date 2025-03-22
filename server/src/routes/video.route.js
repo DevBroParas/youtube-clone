@@ -1,25 +1,25 @@
-import express from 'express'
-import { protect} from "../middleware/auth"
+// import express from 'express'
+// import { protect} from "../middleware/auth"
 
-const router = express.Router()
+// const router = express.Router()
 
-// Get recommended videos (HOME PAGE)
-router.get("/", )
+// // Get recommended videos (HOME PAGE)
+// router.get("/", )
 
-//Get trending videos
-router.get("/trending",)
+// //Get trending videos
+// router.get("/trending",)
 
-//Upload a video
-router.post("/",protect,,)
+// //Upload a video
+// router.post("/",protect,,)
 
-//Add Like/Dislike to video
-router.post("/:videoId/like",protect,)
+// //Add Like/Dislike to video
+// router.post("/:videoId/like",protect,)
 
 
-//Add comment to video
-router.post("/:videoId/comments",protect,)
+// //Add comment to video
+// router.post("/:videoId/comments",protect,)
 
-//Get comments for a video
-router.get("/:videoId/comments")
+// //Get comments for a video
+// router.get("/:videoId/comments")
 
-export default router
+// export default router
