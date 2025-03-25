@@ -1,25 +1,33 @@
-// import express from 'express'
-// import { protect} from "../middleware/auth"
-
-// const router = express.Router()
-
-// // Get recommended videos (HOME PAGE)
-// router.get("/", )
-
-// //Get trending videos
-// router.get("/trending",)
-
-// //Upload a video
-// router.post("/",protect,,)
-
-// //Add Like/Dislike to video
-// router.post("/:videoId/like",protect,)
+import express from 'express'
+import { protect} from "../middleware/auth"
+import { GetRecomVideos, GetTrendVideos, GetVideoById } from '../controllers/video.controller'
 
 
-// //Add comment to video
-// router.post("/:videoId/comments",protect,)
+const router = express.Router()
 
-// //Get comments for a video
-// router.get("/:videoId/comments")
 
-// export default router
+
+
+// Get recommended videos (HOME PAGE)
+router.get("/", GetRecomVideos)
+
+//Get trending videos
+router.get("/trending", GetTrendVideos)
+
+//Get video by id
+router.get("/:videoId", GetVideoById)
+
+//Upload a video
+router.post("/",protect,,)
+
+//Add Like/Dislike to video
+router.post("/:videoId/like",protect,)
+
+
+//Add comment to video
+router.post("/:videoId/comments",protect,)
+
+//Get comments for a video
+router.get("/:videoId/comments")
+
+export default router
