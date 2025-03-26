@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import getVideoViews from '../components/getVideoViews';
+import getVideoViews from '../components/getVideoViews.js';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
@@ -11,7 +11,7 @@ export const GetRecomVideos = async (req,res,next) =>{
     try{
         let videos = await prisma.video.findMany({
             include:{
-                user:ture
+                user:true
             },
             orderBy:{
                 createdAt:'desc'
@@ -95,9 +95,14 @@ export const GetVideoById = async (req, res, next) => {
     }
 }
 
+// Upload a video
 export const UploadVideo = async (req, res, next) => {
     try {
         const { title, description } = req.body;
+
+        if (!title || !description) {
+            return res.status(400).json({message:"Please provide title and description"})
+        }
 
         if (!req.files || !req.files.video || !req.files.thumbnail) {
             return res.status(400).json({message:"Please upload a video and thumbnail"})
@@ -143,7 +148,7 @@ export const AddLike = async (req, res, next) => {
         }
 
         //Check if user has already liked/disliked the video
-        const existingLike = await prisma.like.findFirst({
+        const existingLike = await prisma.videoLike.findFirst({
             where:{
                 userId:req.user.id,
                 videoId
@@ -152,7 +157,7 @@ export const AddLike = async (req, res, next) => {
 
         if (existingLike){
             //Update existing like
-            const updatedLike = await prisma.like.update({
+            const updatedLike = await prisma.videoLike.update({
                 where:{
                     id:existingLike.id
                 },
@@ -184,6 +189,13 @@ export const AddComment = async (req, res, next) => {
     try{
         const { videoId } = req.params;
         const { text } = req.body;
+
+        //Check if text is provided
+        if (!text){
+            return res.status(400).json({
+                message:"Please provide a comment"
+            })
+        }
 
         //Check if video exists
         const videoExists = await prisma.video.findUnique({
