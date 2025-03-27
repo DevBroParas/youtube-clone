@@ -1,7 +1,7 @@
 import express from 'express'
 import { protect} from "../middleware/auth.js"
 import { AddComment, AddLike, GetComment, GetRecomVideos, GetTrendVideos, GetVideoById, UploadVideo } from '../controllers/video.controller.js'
-import upload from "../middleware/multer.js"
+import { uploadMedia } from '../utils/multer.js'
 
 
 const router = express.Router()
@@ -19,7 +19,7 @@ router.get("/trending", GetTrendVideos)
 router.get("/:videoId", GetVideoById)
 
 //Upload a video
-router.post("/",protect,upload.fields([    { name: 'video', maxCount: 1 },    { name: 'thumbnail', maxCount: 1 }  ]),UploadVideo)
+router.post("/",protect,uploadMedia.fields([    { name: 'video', maxCount: 1 },    { name: 'thumbnail', maxCount: 1 }  ]),UploadVideo)
 
 //Add Like/Dislike to video
 router.post("/:videoId/like",protect,AddLike)

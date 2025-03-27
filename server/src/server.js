@@ -9,7 +9,7 @@ dotenv.config();
 //Import routes
 import authRoutes from './routes/auth.route.js';
 import videoRoutes from './routes/video.route.js';
-// import userRoutes from './routes/user.route.js';
+import userRoutes from './routes/user.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,7 +29,7 @@ app.use('/uploads', express.static('uploads'));
 //Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/videos', videoRoutes);
-// app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.use((err, req,res,next) => {
     console.error(err.stack);
