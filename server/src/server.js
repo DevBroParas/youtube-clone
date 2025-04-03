@@ -36,6 +36,11 @@ app.use('/api/v1/uploads', (req, res, next) => {
     next();
 });
 
+app.use('/api/v1/videos', (req, res, next) => {
+    console.log(`Request received for: ${req.method} ${req.url}`);
+    next();
+});
+
 app.use('/api/v1/uploads', express.static('uploads'));
 
 //Routes

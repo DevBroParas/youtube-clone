@@ -249,3 +249,39 @@ export const GetComment = async (req, res, next) => {
     }
 }
 
+//Search videos
+export const searchVideos = async (req, res, next) => {
+    console.log("✅ searchVideos function called");
+    try {
+        const { query } = req.query; // Extract the query parameter
+        console.log("Search Query:", query);
+
+        if (!query) {
+            return res.status(400).json({ message: "Please provide a search query" });
+        }
+
+        const videos = await prisma.video.findMany({
+            where: {
+                OR: [
+                    { title: { contains: query, mode: 'insensitive' } },
+                    { description: { contains: query, mode: 'insensitive' } }
+                ]
+            },
+            include: {
+                user: true
+            }
+        });
+
+        console.log("Search Results:", videos);
+
+        if (videos.length === 0) {
+            return res.status(404).json({ message: "No videos found" });
+        }
+
+        res.status(200).json({ videos });
+    } catch (error) {
+        console.error("Error in searchVideos:", error);
+        next(error);
+    }
+};
+
