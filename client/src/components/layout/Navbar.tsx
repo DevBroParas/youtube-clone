@@ -59,7 +59,7 @@ export function Navbar () {
                     </button>
                     {showDropDown && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                            <Link href={`/profile/${user.username}`} className="block px-4 py-2 hover:bg-gray-100">Your Channel</Link>
+                            <Link href={`/profile/${user.id}`} className="block px-4 py-2 hover:bg-gray-100">Your Channel</Link>
                             <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-100" >Sign Out</button>
                         </div>
                     )}
