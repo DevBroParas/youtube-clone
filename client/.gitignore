@@ -13,8 +13,6 @@
 # testing
 /coverage
 
-*.pdf
-
 # next.js
 /.next/
 /out/

@@ -18,13 +18,25 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(cors({
-//     origin: process.env.CLIENT_URL || "http://localhost:5173",
-//     credentials: true
-// }));
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3001",
+    credentials: true
+}));
 
 //Static file serving for uploaded videos and images
+app.use('/uploads', (req, res, next) => {
+    console.log(`Request received for: ${req.url}`);
+    next();
+});
+
 app.use('/uploads', express.static('uploads'));
+
+app.use('/api/v1/uploads', (req, res, next) => {
+    console.log(`Request received for: ${req.url}`);
+    next();
+});
+
+app.use('/api/v1/uploads', express.static('uploads'));
 
 //Routes
 app.use('/api/v1/auth', authRoutes);

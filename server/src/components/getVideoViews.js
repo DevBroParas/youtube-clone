@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+const Prisma = new PrismaClient();
+
 async function getVideoViews(videos) {
     for (const video of videos) {
         const views = await Prisma.view.count({
