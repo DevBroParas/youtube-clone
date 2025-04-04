@@ -46,7 +46,7 @@ export const GetTrendVideos = async (req, res, next) => {
             return res.status(200).json({ videos:[]})
         }
 
-        videos = await GetTrendVideos(videos);
+        videos = await getVideoViews(videos);
 
         res.status(200).json({videos})
     } catch (error) {

@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouTube Clone Client
 
-## Getting Started
+## Project Overview
+This is the client-side application of the YouTube clone project built using React. It contains all the frontend code responsible for the user interface and interactions.
 
-First, run the development server:
+## Folder Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+client/
+├── public/            # Public assets and index.html
+├── src/              # Source code files
+│   ├── components/   # Reusable React components
+│   ├── pages/        # Page components for different routes
+│   ├── utils/        # Utility functions and helpers
+│   ├── styles/       # CSS and styling files
+│   ├── context/      # React context providers
+│   ├── hooks/        # Custom React hooks
+│   ├── api/          # API integration functions
+│   └── App.js        # Main application component
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Components Explanation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Components Directory
+- `Navbar/` - Main navigation bar component
+- `VideoCard/` - Component for displaying video thumbnails
+- `Comments/` - Comment section components
+- `Menu/` - Sidebar menu components
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Pages Directory
+- `Home.jsx` - Homepage displaying video feed
+- `Video.jsx` - Single video viewing page
+- `SignIn.jsx` - User authentication page
+- `Search.jsx` - Search results page
 
-## Learn More
+### Context Directory
+- `authContext.js` - Manages user authentication state
+- `themeContext.js` - Handles dark/light theme switching
 
-To learn more about Next.js, take a look at the following resources:
+## Setup and Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Install dependencies:
+```bash
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Start development server:
+```bash
+npm start
+```
 
-## Deploy on Vercel
+3. Build for production:
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Features
+- Responsive design that works on both desktop and mobile
+- Video playback functionality
+- User authentication
+- Comment system
+- Like/Dislike functionality
+- Video upload capability
+- Search functionality
+- Dark/Light theme toggle
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Important Files
+
+- `index.js`: Entry point of the application
+- `App.js`: Main component that handles routing
+- `firebase.js`: Firebase configuration (if used)
+- `package.json`: Project dependencies and scripts
+- `.env`: Environment variables (make sure to create it from .env.example)
+
+## API Integration
+The client communicates with the backend server through RESTful API endpoints. API integration functions are located in the `api/` directory.
+
+## Styling
+- Uses styled-components for component styling
+- Global styles are defined in `styles/` directory
+- Responsive design breakpoints are defined in utilities
+
+## State Management
+- Uses React Context API for global state management
+- Local state managed through React hooks
+- Redux might be implemented for more complex state requirements
+
+## Best Practices
+- Follow component composition patterns
+- Keep components small and reusable
+- Implement proper error handling
+- Use proper TypeScript/PropTypes for type checking
+- Follow consistent naming conventions
+
+## Contributing
+1. Create a new branch for features
+2. Follow the existing code style
+3. Write clear commit messages
+4. Test thoroughly before submitting PR
+
+## Troubleshooting
+Common issues and their solutions:
+- If build fails, clear npm cache: `npm cache clean --force`
+- For API issues, check .env configuration
+- For styling issues, check theme provider setup
