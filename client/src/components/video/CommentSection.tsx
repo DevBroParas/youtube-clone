@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Comment } from '@/types';
 import { addComment, getVideoComments } from '@/lib/services/videoService';
 
@@ -11,6 +11,11 @@ export function CommentSection({ videoId }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
 
+  // Fetch comments when the component mounts
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
   const fetchComments = async () => {
     const fetchedComments = await getVideoComments(videoId);
     setComments(fetchedComments);
@@ -19,7 +24,7 @@ export function CommentSection({ videoId }: CommentSectionProps) {
   const handleAddComment = async () => {
     await addComment(videoId, newComment);
     setNewComment('');
-    fetchComments();
+    fetchComments(); // Refresh comments after adding a new one
   };
 
   return (
@@ -33,7 +38,7 @@ export function CommentSection({ videoId }: CommentSectionProps) {
       />
       <button onClick={handleAddComment}>Submit</button>
       {comments.map((comment) => (
-        <div key={comment.id}>
+        <div key={comment.id} className="mt-4">
           <p>{comment.text}</p>
           <small>By {comment.user.username}</small>
         </div>

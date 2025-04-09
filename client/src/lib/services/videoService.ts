@@ -50,3 +50,13 @@ export async function addComment(videoId: string, text: string) {
     throw error;
   }
 }
+
+export async function getRelatedVideos(videoId: string) {
+  try {
+      const response = await api.get(`/videos/${videoId}/related`);
+      return response.data.relatedVideos;
+  } catch (error) {
+      console.error(`Error fetching related videos for video ${videoId}:`, error);
+      return [];
+  }
+}

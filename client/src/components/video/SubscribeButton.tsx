@@ -1,19 +1,28 @@
-// src/components/SubscribeButton.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import { userService } from '@/lib/services/userService';
 
-export default function SubscribeButton({ channelId }: { channelId: string }) {
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [loading, setLoading] = useState(false);
+interface SubscribeButtonProps {
+  channelId: string; // The ID of the channel (user) who owns the video
+}
 
+const SubscribeButton: React.FC<SubscribeButtonProps> = ({ channelId }) => {
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Fetch subscription status when the component mounts
   useEffect(() => {
-    const checkSubscription = async () => {
-      const subscriptions = await userService.getSubscriptions();
-      setIsSubscribed(subscriptions.some(sub => sub.subscribedTo.id === channelId));
+    const fetchSubscriptionStatus = async () => {
+      try {
+        const subscriptions = await userService.getSubscriptions();
+        setIsSubscribed(subscriptions.some((channel) => channel.id === channelId));
+      } catch (error: any) {
+        console.error('Error fetching subscription status:', error.response?.data?.message || error.message);
+      }
     };
-    checkSubscription();
+
+    fetchSubscriptionStatus();
   }, [channelId]);
 
   const handleSubscribe = async () => {
@@ -21,24 +30,29 @@ export default function SubscribeButton({ channelId }: { channelId: string }) {
     try {
       if (isSubscribed) {
         await userService.unsubscribe(channelId);
+        setIsSubscribed(false);
       } else {
         await userService.subscribe(channelId);
+        setIsSubscribed(true);
       }
-      setIsSubscribed(!isSubscribed);
+    } catch (error: any) {
+      console.error('Error updating subscription:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <button 
+    <button
       onClick={handleSubscribe}
       disabled={loading}
-      className={`px-4 py-2 rounded-lg ${
-        isSubscribed ? 'bg-gray-200 text-black' : 'bg-red-600 text-white'
+      className={`px-4 py-2 rounded ${
+        isSubscribed ? 'bg-red-500 text-white' : 'bg-blue-500 text-white'
       }`}
     >
-      {isSubscribed ? 'Subscribed' : 'Subscribe'}
+      {loading ? 'Loading...' : isSubscribed ? 'Unsubscribe' : 'Subscribe'}
     </button>
   );
-}
+};
+
+export default SubscribeButton;

@@ -100,6 +100,43 @@ export const UpdateUserProfile = async (req, res, next) => {
     }
 }
 
+// Get subscribed channels
+export const GetSubscribedChannels = async (req, res, next) => {
+    try {
+      console.log("Authenticated user in GetSubscribedChannels:", req.user);
+  
+      // Check if req.user is populated
+      if (!req.user || !req.user.id) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+  
+      // Fetch subscriptions
+      const subscriptions = await prisma.subscription.findMany({
+        where: {
+          subscriberId: req.user.id,
+        },
+        include: {
+          subscribedTo: true,
+        },
+      });
+  
+      console.log("Subscriptions found:", subscriptions);
+  
+      // Map subscriptions to return only user data
+      const channels = subscriptions.map((sub) => {
+        const { password: _, ...userData } = sub.subscribedTo;
+        return userData;
+      });
+  
+      console.log("Channels to return:", channels);
+  
+      res.status(200).json({ channels });
+    } catch (error) {
+      console.error("Error in GetSubscribedChannels:", error);
+      next(error);
+    }
+  };
+
 // Subscribe to channel
 export const SubscribeToChannel = async (req, res, next) => {
     try{
@@ -180,29 +217,9 @@ export const UnsubscribeFromChannel = async (req, res, next) => {
     }
 }
 
-// Get subscribed channels
-export const GetSubscribedChannels = async (req, res, next) => {
-    try{
-        const subscriptions = await prisma.subscription.findMany({
-            where:{
-                subscriberId: req.user.id
-            },
-            include:{
-                subscribedTo: true
-            }
-        })
 
-        const channels = subscriptions.map( sub => {
-            const {password: _, ...userData } = sub.subscribedTo;
-            return userData;
-        })
 
-        res.status(200).json({channels}) 
-    } catch (error) {
-        next(error)
-    }
-}
-
+//Get liked video
 export const GetLikedVideos = async (req, res, next) => {
     try{
         const likedVideos = await prisma.videoLike.findMany({

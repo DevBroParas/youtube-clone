@@ -21,21 +21,21 @@ export const userService = {
     });
   },
 
-  subscribe: async (channelId: string) => {
-    return axios.post(`${API_URL}/subscriptions/${channelId}`);
+  subscribe: async (userId: string) => {
+    return axios.post(`${API_URL}/users/${userId}/subscribe`, {}, { withCredentials: true });
   },
 
-  unsubscribe: async (channelId: string) => {
-    return axios.delete(`${API_URL}/subscriptions/${channelId}`);
+  unsubscribe: async (userId: string) => {
+    return axios.delete(`${API_URL}/users/${userId}/unsubscribe`, { withCredentials: true });
   },
 
   getSubscriptions: async (): Promise<Subscription[]> => {
-    const response = await axios.get(`${API_URL}/subscriptions`);
+    const response = await axios.get(`${API_URL}/users/subscriptions`, { withCredentials: true });
     return response.data.channels;
   },
 
   getLikedVideos: async (): Promise<VideoLike[]> => {
-    const response = await axios.get(`${API_URL}/likes`);
+    const response = await axios.get(`${API_URL}/users/liked-videos`, { withCredentials: true });
     return response.data.videos;
   }
 };

@@ -184,6 +184,25 @@ export const AddLike = async (req, res, next) => {
     }
 }
 
+//Get like status for a video
+export const GetLikeStatus = async (req, res, next) => {
+    try {
+        const { videoId } = req.params;
+
+        // Check if the user has liked/disliked the video
+        const likeStatus = await prisma.videoLike.findFirst({
+            where: {
+                videoId,
+                userId: req.user.id,
+            },
+        });
+
+        res.status(200).json({ like: likeStatus ? likeStatus.like : 0 }); // 0 if no like/dislike
+    } catch (error) {
+        next(error);
+    }
+};
+
 //Add comment to video
 export const AddComment = async (req, res, next) => {
     try{
@@ -285,3 +304,37 @@ export const searchVideos = async (req, res, next) => {
     }
 };
 
+// Get related videos
+export const GetRelatedVideos = async (req, res, next) => {
+    try {
+        const { videoId } = req.params;
+
+        // Fetch the current video to get its title or tags
+        const currentVideo = await prisma.video.findUnique({
+            where: { id: videoId },
+        });
+
+        if (!currentVideo) {
+            return res.status(404).json({ message: "Video not found" });
+        }
+
+        // Fetch related videos based on title or tags (excluding the current video)
+        const relatedVideos = await prisma.video.findMany({
+            where: {
+                id: { not: videoId }, // Exclude the current video
+                OR: [
+                    { title: { contains: currentVideo.title.split(' ')[0], mode: 'insensitive' } },
+                    { description: { contains: currentVideo.title.split(' ')[0], mode: 'insensitive' } },
+                ],
+            },
+            include: {
+                user: true, // Include user details if needed
+            },
+            take: 10, // Limit the number of related videos
+        });
+
+        res.status(200).json({ relatedVideos });
+    } catch (error) {
+        next(error);
+    }
+};

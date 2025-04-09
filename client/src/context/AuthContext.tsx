@@ -40,14 +40,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
+
   const login = async (email: string, password: string) => {
     const res = await api.post('/auth/login', { email, password });
-    setUser(res.data.user);
+    
+    const { token, user } = res.data;
+  
+    if (token) {
+      localStorage.setItem('authToken', token); // ✅ Store token
+    }
+  
+    setUser(user);
   };
+  
 
   const signup = async (username: string, email: string, password: string) => {
     const res = await api.post('/auth/register', { username, email, password });
-    setUser(res.data.user);
+  
+    const { token, user } = res.data;
+  
+    if (token) {
+      localStorage.setItem('authToken', token); // ✅ Store token
+    }
+  
+    setUser(user);
   };
 
   const logout = async () => {
