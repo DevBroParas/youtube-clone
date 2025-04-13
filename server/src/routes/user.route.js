@@ -1,6 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/auth.js";
 import { uploadAvatar } from "../utils/multer.js";
+import path from "path";
 import {
   GetLikedVideos,
   GetSubscribedChannels,
@@ -16,12 +17,17 @@ const router = express.Router();
 router.put(
   "/profile",
   protect,
-  uploadAvatar.single({ name: "avatar", maxCount: 1 }),
+  uploadAvatar.single("avatar"), // Changed from { name: "avatar", maxCount: 1 }
   UpdateUserProfile
 );
 
 //Get liked videos
 router.get("/liked-videos", protect, GetLikedVideos);
+
+
+// Move this before your API routes
+router.use('/api/v1/uploads/avatars', express.static(path.join(process.cwd(), 'uploads/avatars')));
+
 
 //Get subscribed channels
 router.get("/subscriptions", protect, GetSubscribedChannels);

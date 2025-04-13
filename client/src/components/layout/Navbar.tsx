@@ -40,21 +40,19 @@ export function Navbar () {
                     <button onClick={() => setShowDropDown(!showDropDown) } className="flex items-center">
                         <div className="w-8 h-8 rounded-full overflow-hidden">
                         <Image 
-                            src={(user.avatar.startsWith("http") 
-                                ? user.avatar 
-                                : `${process.env.NEXT_PUBLIC_API_URL}/uploads/${user.avatar}`
-                            ).trim()} // Ensures no trailing spaces
-                            alt={user.username} 
-                            width={32} 
-                            height={32}
-                            className="object-cover"
-                            onError={(e) => {
-                                console.log("Image failed to load, falling back to default-avatar.png");
-                                const target = e.target as HTMLImageElement;
-                                target.src = `${process.env.NEXT_PUBLIC_API_URL}/uploads/default-avatar.png`.trim();
-                            }}
-                    />
-
+    src={(user.avatar.startsWith("http") 
+        ? user.avatar 
+        : `${process.env.NEXT_PUBLIC_API_URL}/uploads/avatars/${user.avatar.replace(/^.*[\\\/]/, '')}`
+    ).trim()} 
+    alt={user.username} 
+    width={32} 
+    height={32}
+    className="object-cover"
+    onError={(e) => {
+        const target = e.target as HTMLImageElement;
+        target.src = `${process.env.NEXT_PUBLIC_API_URL}/uploads/avatars/default-avatar.png`;
+    }}
+/>
                         </div>
                     </button>
                     {showDropDown && (

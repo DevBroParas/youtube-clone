@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-//load enviroment variables
+//load environment variables
 dotenv.config();
 
 //Import routes
@@ -19,42 +21,41 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3001",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true
 }));
 
-//Static file serving for uploaded videos and images
-app.use('/uploads', (req, res, next) => {
-    console.log(`Request received for: ${req.url}`);
-    next();
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.use('/uploads', express.static('uploads'));
 
+
+const uploadsPath = path.join(process.cwd(), 'uploads');
+app.use('/api/v1/uploads/avatars', express.static(path.join(uploadsPath, 'avatars')));
+app.use('/api/v1/uploads/thumbnails', express.static(path.join(uploadsPath, 'thumbnails')));
+
+// Logging middleware
 app.use('/api/v1/uploads', (req, res, next) => {
-    console.log(`Request received for: ${req.url}`);
+    console.log(`File request received for: ${req.url}`);
     next();
 });
+app.use('/api/v1/uploads', express.static(path.join(__dirname, '../uploads')));
 
-app.use('/api/v1/videos', (req, res, next) => {
-    console.log(`Request received for: ${req.method} ${req.url}`);
-    next();
-});
-
-app.use('/api/v1/uploads', express.static('uploads'));
+// Single static file serving middleware
+app.use('/api/v1/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 //Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/videos', videoRoutes);
 app.use('/api/v1/users', userRoutes);
 
-app.use((err, req,res,next) => {
+// Error handling middleware
+app.use((err, req, res, next) => {
     console.error(err.stack);
     const status = err.status || 500;
     const message = err.message || 'Something went wrong';
     res.status(status).json({message});
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

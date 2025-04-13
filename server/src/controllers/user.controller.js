@@ -10,10 +10,10 @@ export const GetUserProfile = async (req, res, next) => {
         const { userId  } = req.params;
 
         const user = await prisma.user.findUnique({
-            where:{
-                id: userId
+            where: {
+                id: userId,
             },
-            select:{
+            select: {
                 id: true,
                 createdAt: true,
                 username: true,
@@ -21,8 +21,13 @@ export const GetUserProfile = async (req, res, next) => {
                 avatar: true,
                 cover: true,
                 about: true,
-            }
+            },
         });
+        
+        // Ensure avatar is trimmed and valid
+        if (user && user.avatar) {
+            user.avatar = user.avatar.trim(); // Remove trailing spaces
+        }
 
         if (!user){
             return res.status(404).json({message:"User not found"})
@@ -81,8 +86,8 @@ export const UpdateUserProfile = async (req, res, next) => {
         };
 
         // If avatar is updated, update it 
-        if (req.file){
-            updateData.avatar = req.file.path.replace(/\\/g, "/");
+        if (req.file) {
+            updateData.avatar = req.file.filename; // Save just the filename
         }
 
         const updatedUser = await prisma.user.update({
@@ -125,8 +130,9 @@ export const GetSubscribedChannels = async (req, res, next) => {
       // Map subscriptions to return only user data
       const channels = subscriptions.map((sub) => {
         const { password: _, ...userData } = sub.subscribedTo;
+        userData.avatar = userData.avatar ? userData.avatar.trim() : ""; // Ensure avatar is trimmed or empty
         return userData;
-      });
+    });
   
       console.log("Channels to return:", channels);
   

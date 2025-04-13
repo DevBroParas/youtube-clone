@@ -22,7 +22,32 @@ const nextConfig: NextConfig = {
         port: "3001",
         pathname: "/api/v1/default-avatar.png", // Explicitly allow default-avatar.png
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/api/v1/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/api/v1/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/api/v1/**', // 👈 this covers your image paths
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/**',
+      },
     ],
+   
   },
 };
 

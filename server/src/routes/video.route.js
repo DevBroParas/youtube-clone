@@ -25,9 +25,6 @@ router.get("/search", async (req, res, next) => {
 //Get trending videos
 router.get("/trending", GetTrendVideos)
 
-//Get video by id
-router.get("/:videoId", GetVideoById)
-
 //Upload a video
 router.post("/", protect, uploadMedia.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), UploadVideo)
 
@@ -46,5 +43,7 @@ router.get("/:videoId/comments", GetComment)
 // Get related videos
 router.get("/:videoId/related", GetRelatedVideos);
 
+//Get video by id
+router.get("/:videoId", GetVideoById)
 
 export default router
