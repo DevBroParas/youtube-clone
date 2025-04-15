@@ -11,8 +11,8 @@ interface UpdateProfilePageProps {
     };
 }
 
-export default function UpdateProfilePage({ params }: UpdateProfilePageProps) {
-    const { id } =await params;
+export default function  UpdateProfilePage({ params }: UpdateProfilePageProps) {
+    const { id } = params;
     const router = useRouter();
 
     const [username, setUsername] = useState('');

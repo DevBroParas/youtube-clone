@@ -6,12 +6,40 @@ import { useState } from "react";
 import { formatDistance } from "date-fns";
 import { VideoWithUser } from "@/types";
 import LikeButton from "./LikeButton";
+import  getAvatarSrc from "@/lib/avatar";
+import getThumbnailSrc from "@/lib/thumbnail";
 
 interface VideoCardProps {
     video: VideoWithUser;
     horizontal?: boolean;
     showLikeButton?: boolean;
 }
+
+// export function getAvatarSrc(avatarPath: string | null): string {
+//     const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    
+//     if (!avatarPath) return `${base}/uploads/avatars/default-avatar.png`;
+    
+//     if (avatarPath.startsWith('http')) return avatarPath.trim();
+    
+//     const cleanPath = avatarPath.replace(/^.*[\\\/]/, '').trim();
+    
+//     return `${base}/uploads/avatars/${cleanPath}`;
+// }
+
+// const getThumbnailSrc = (thumbnailPath: string | null) => {
+//     if (!thumbnailPath) {
+//         return '/default-thumbnail.png';
+//     }
+
+//     if (thumbnailPath.startsWith('http')) {
+//         return thumbnailPath.trim();
+//     }
+
+//     return `${process.env.NEXT_PUBLIC_API_URL}/uploads/thumbnails/${thumbnailPath.replace(/^.*[\\\/]/, '').trim()}`;
+// };
+
+
 
 export function VideoCard({ 
     video, 
@@ -20,29 +48,9 @@ export function VideoCard({
 }: VideoCardProps) {
     const { id, title, thumbnail, user, views, createdAt } = video;
 
-    const getAvatarSrc = (avatarPath: string | null) => {
-        const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-    
-        if (!avatarPath) return `${base}/uploads/avatars/default-avatar.png`;
-    
-        if (avatarPath.startsWith('http')) return avatarPath.trim();
-    
-        const cleanPath = avatarPath.replace(/^.*[\\\/]/, '').trim();
-    
-        return `${base}/uploads/avatars/${cleanPath}`;
-    };
 
-    const getThumbnailSrc = (thumbnailPath: string | null) => {
-        if (!thumbnailPath) {
-            return '/default-thumbnail.png';
-        }
 
-        if (thumbnailPath.startsWith('http')) {
-            return thumbnailPath.trim();
-        }
 
-        return `${process.env.NEXT_PUBLIC_API_URL}/uploads/thumbnails/${thumbnailPath.replace(/^.*[\\\/]/, '').trim()}`;
-    };
 
     const [avatarSrc, setAvatarSrc] = useState(getAvatarSrc(user.avatar));
     const [thumbnailSrc, setThumbnailSrc] = useState(getThumbnailSrc(thumbnail));

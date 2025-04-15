@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
+import getAvatarSrc from '@/lib/avatar';
+
 
 interface Channel {
     id: string;
@@ -58,16 +60,12 @@ export default function SubscriptionsPage() {
                         <div key={channel.id} className="channel-card border p-4 rounded-lg shadow-sm">
                             <div className="flex items-center space-x-4">
                             <Image
-    src={
-        channel.avatar && channel.avatar.trim() !== "" && channel.avatar !== "default-avatar.png"
-            ? `${process.env.NEXT_PUBLIC_API_URL}/${channel.avatar.trim()}`
-            : '/default-avatar.png' // Serve fallback from the public folder
-    }
-    alt={`${channel.username}'s avatar`}
-    width={50}
-    height={50}
-    className="rounded-full"
-/>
+                                src={getAvatarSrc(channel.avatar)}
+                                alt={`${channel.username}'s avatar`}
+                                width={50}
+                                height={50}
+                                className="rounded-full"
+                            />
                                 <div>
                                     <h2 className="text-lg font-bold">{channel.username}</h2>
                                     <p className="text-sm text-gray-600">{channel.about || 'No description available.'}</p>

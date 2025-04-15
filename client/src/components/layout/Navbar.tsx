@@ -6,6 +6,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { SearchBar } from "@/components/ui/SearchBar"
+import getAvatarSrc from "@/lib/avatar"
 
 export function Navbar () {
     const { user, logout } = useAuth();
@@ -40,10 +41,7 @@ export function Navbar () {
                     <button onClick={() => setShowDropDown(!showDropDown) } className="flex items-center">
                         <div className="w-8 h-8 rounded-full overflow-hidden">
                         <Image 
-    src={(user.avatar.startsWith("http") 
-        ? user.avatar 
-        : `${process.env.NEXT_PUBLIC_API_URL}/uploads/avatars/${user.avatar.replace(/^.*[\\\/]/, '')}`
-    ).trim()} 
+    src={getAvatarSrc(user.avatar)} 
     alt={user.username} 
     width={32} 
     height={32}
